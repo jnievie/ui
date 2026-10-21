@@ -1,0 +1,6 @@
+{
+  "name": "AgriStock OS — Agricultural Inventory & Stock UI System",
+  "description": "Enterprise agriculture inventory and stocks system with UI design specifications, silo & warehouse telemetry, real-time stock checking, and Python backend architecture.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
