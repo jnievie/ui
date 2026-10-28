@@ -1,21 +1,2716 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>AgriStock OS — Agricultural Inventory & Stock UI System</title>
-    <meta name="description" content="Enterprise agriculture inventory and stocks system with UI design specifications, silo & warehouse telemetry, real-time stock checking, and Python backend architecture." />
-    <meta property="og:title" content="AgriStock OS — Agricultural Inventory & Stock UI System" />
-    <meta property="og:description" content="Enterprise agriculture inventory and stocks system with UI design specifications, silo & warehouse telemetry, real-time stock checking, and Python backend architecture." />
-    <meta property="og:type" content="website" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
-</html>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <title>DALOY — Farm Resources in Motion</title>
+  <meta name="description" content="DALOY — Farm Resources in Motion. Agricultural cooperative web system for managing farm supplies, tracking low-stock inventory, managing farmer profiles, and facilitating farmer-to-farmer resource exchanges." />
+  <meta property="og:title" content="DALOY — Farm Resources in Motion" />
+  <meta property="og:description" content="Agricultural cooperative web system for managing farm supplies, tracking low-stock inventory, managing farmer profiles, and facilitating farmer-to-farmer resource exchanges." />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=JetBrains+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
 
+  <script>
+    /* Multi-stage image resolver so photos display on Flask (:5000), Live Server (:5500), and 3-file standalone folders */
+    window.DALOY_FALLBACK_ART = {
+      landscape: "data:image/svg+xml;charset=UTF-8," + encodeURIComponent(
+        "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 900 1100'>" +
+        "<defs>" +
+        "<linearGradient id='sky' x1='0' y1='0' x2='0' y2='1'><stop offset='0%' stop-color='#DF9A63'/><stop offset='48%' stop-color='#F2C58D'/><stop offset='100%' stop-color='#7B482B'/></linearGradient>" +
+        "<linearGradient id='hill1' x1='0' y1='0' x2='1' y2='1'><stop offset='0%' stop-color='#9E5B36'/><stop offset='100%' stop-color='#5E351F'/></linearGradient>" +
+        "<linearGradient id='hill2' x1='0' y1='0' x2='0' y2='1'><stop offset='0%' stop-color='#C88448'/><stop offset='100%' stop-color='#4A2C1B'/></linearGradient>" +
+        "</defs>" +
+        "<rect width='900' height='1100' fill='url(#sky)'/>" +
+        "<circle cx='640' cy='290' r='115' fill='#FFF2D6' opacity='0.88'/>" +
+        "<circle cx='640' cy='290' r='165' fill='#FFF2D6' opacity='0.22'/>" +
+        "<path d='M0 540 Q260 450 540 520 T900 490 L900 1100 L0 1100 Z' fill='url(#hill1)'/>" +
+        "<rect x='170' y='455' width='58' height='105' rx='6' fill='#5A3320'/>" +
+        "<path d='M165 458 Q199 422 233 458 Z' fill='#B85D3B'/>" +
+        "<polygon points='245,495 355,495 375,560 225,560' fill='#B85D3B'/>" +
+        "<rect x='240' y='555' width='120' height='58' fill='#472819'/>" +
+        "<path d='M0 640 Q310 560 620 635 T900 610 L900 1100 L0 1100 Z' fill='url(#hill2)'/>" +
+        "<path d='M0 735 Q360 665 900 760 M0 810 Q380 735 900 845 M0 890 Q410 815 900 935' stroke='#E9B87A' stroke-width='4' fill='none' opacity='0.42'/>" +
+        "<rect y='760' width='900' height='340' fill='#2B1D14' opacity='0.58'/>" +
+        "</svg>"
+      ),
+      farmer: "data:image/svg+xml;charset=UTF-8," + encodeURIComponent(
+        "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 640 440'>" +
+        "<defs><linearGradient id='bg' x1='0' y1='0' x2='1' y2='1'><stop offset='0%' stop-color='#E8CFAF'/><stop offset='100%' stop-color='#C49A6C'/></linearGradient></defs>" +
+        "<rect width='640' height='440' fill='url(#bg)'/>" +
+        "<circle cx='500' cy='105' r='54' fill='#FFF5E4' opacity='0.65'/>" +
+        "<path d='M0 320 Q210 270 430 315 T640 295 L640 440 L0 440 Z' fill='#8C583A' opacity='0.45'/>" +
+        "<ellipse cx='320' cy='168' rx='98' ry='26' fill='#B85D3B'/>" +
+        "<path d='M265 165 Q320 110 375 165 Z' fill='#D28A52'/>" +
+        "<circle cx='320' cy='205' r='44' fill='#6D442B'/>" +
+        "<path d='M228 380 C228 298 412 298 412 380 Z' fill='#3B281C'/>" +
+        "</svg>"
+      ),
+      resource: "data:image/svg+xml;charset=UTF-8," + encodeURIComponent(
+        "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 640 480'>" +
+        "<defs><linearGradient id='rbg' x1='0' y1='0' x2='1' y2='1'><stop offset='0%' stop-color='#EFE1CE'/><stop offset='100%' stop-color='#CFA982'/></linearGradient></defs>" +
+        "<rect width='640' height='480' fill='url(#rbg)'/>" +
+        "<path d='M0 360 L640 360 L640 480 L0 480 Z' fill='#7A5136' opacity='0.35'/>" +
+        "<rect x='175' y='175' width='135' height='190' rx='28' fill='#B88456' stroke='#6E472B' stroke-width='5'/>" +
+        "<path d='M198 175 L220 142 L265 142 L287 175 Z' fill='#C89666' stroke='#6E472B' stroke-width='5'/>" +
+        "<rect x='325' y='205' width='135' height='160' rx='26' fill='#A86F45' stroke='#5A3921' stroke-width='5'/>" +
+        "<circle cx='242' cy='270' r='22' fill='#FFF3DF' opacity='0.75'/>" +
+        "<circle cx='392' cy='285' r='20' fill='#FFF3DF' opacity='0.65'/>" +
+        "</svg>"
+      )
+    };
+
+    window.handleDaloyImgError = function (img, kind) {
+      var orig = img.getAttribute('data-orig') || img.getAttribute('src') || '';
+      if (!img.getAttribute('data-orig')) img.setAttribute('data-orig', orig);
+      var filename = orig.split('/').pop();
+      var step = Number(img.getAttribute('data-fallback-step') || '0');
+
+      if (step === 0 && filename) {
+        img.setAttribute('data-fallback-step', '1');
+        img.src = 'public/images/' + filename;
+        return;
+      }
+      if (step === 1 && filename) {
+        img.setAttribute('data-fallback-step', '2');
+        img.src = 'images/' + filename;
+        return;
+      }
+      if (step === 2 && filename && (window.location.protocol === 'file:' || ['5500', '5501', '5502', '5503'].indexOf(window.location.port) !== -1)) {
+        img.setAttribute('data-fallback-step', '3');
+        img.src = 'http://127.0.0.1:5000/images/' + filename;
+        return;
+      }
+      img.onerror = null;
+      img.src = window.DALOY_FALLBACK_ART[kind] || window.DALOY_FALLBACK_ART.resource;
+    };
+  </script>
+
+  <style>
+    /* ========================================================================
+       1. DESIGN TOKENS & RESET (Warm Cream, Dark Brown, Muted Terracotta, Beige)
+       ======================================================================== */
+    :root {
+      --bg-cream: #FAF6F0;
+      --bg-ivory: #FFFDF9;
+      --card-beige: #F3ECE1;
+      --card-beige-hover: #ECE2D2;
+      --nav-brown: #2B1D14;
+      --nav-brown-soft: #3B281C;
+      --terracotta: #B85D3B;
+      --terracotta-hover: #9C4B2C;
+      --terracotta-soft: #F6E7E0;
+      --ink-dark: #2C1E16;
+      --ink-body: #463529;
+      --ink-muted: #736051;
+      --border-warm: #E3D6C5;
+      --border-strong: #D2C1AC;
+      --status-ok: #5C4736;
+      --status-low: #B4651D;
+      --status-out: #A63A2B;
+      --shadow-soft: 0 2px 10px rgba(43, 29, 20, 0.05);
+      --shadow-modal: 0 18px 42px rgba(43, 29, 20, 0.22);
+      --radius-lg: 14px;
+      --radius-md: 10px;
+      --radius-sm: 8px;
+      --font-display: 'Fraunces', Georgia, serif;
+      --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      min-height: 100%;
+      background-color: var(--bg-cream);
+      color: var(--ink-dark);
+      font-family: var(--font-sans);
+      font-size: 15px;
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    button, input, select, textarea {
+      font-family: inherit;
+      font-size: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    .num {
+      font-family: var(--font-mono);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    /* ========================================================================
+       2. BUTTONS & FORM CONTROLS
+       ======================================================================== */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 9px 18px;
+      border-radius: var(--radius-sm);
+      font-size: 13.5px;
+      font-weight: 600;
+      border: 1px solid transparent;
+      white-space: nowrap;
+      flex-shrink: 0;
+      transition: transform 0.15s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.15s ease, border-color 0.15s ease;
+    }
+
+    .btn:active {
+      transform: scale(0.98);
+    }
+
+    .btn:focus-visible,
+    .form-control:focus-visible {
+      outline: 2px solid var(--terracotta);
+      outline-offset: 2px;
+    }
+
+    .btn-primary {
+      background-color: var(--terracotta);
+      color: #FFFDF9;
+    }
+
+    .btn-primary:hover {
+      background-color: var(--terracotta-hover);
+    }
+
+    .btn-secondary {
+      background-color: var(--card-beige);
+      color: var(--ink-dark);
+      border-color: var(--border-strong);
+    }
+
+    .btn-secondary:hover {
+      background-color: var(--card-beige-hover);
+    }
+
+    .btn-ghost {
+      background-color: transparent;
+      color: var(--ink-body);
+      border-color: var(--border-warm);
+      padding: 6px 12px;
+      font-size: 12.5px;
+    }
+
+    .btn-ghost:hover {
+      background-color: var(--card-beige);
+      color: var(--ink-dark);
+    }
+
+    .btn-danger-text {
+      background-color: transparent;
+      color: var(--status-out);
+      border-color: #E7C9C3;
+      padding: 6px 12px;
+      font-size: 12.5px;
+    }
+
+    .btn-danger-text:hover {
+      background-color: #F9EBE8;
+    }
+
+    .btn-danger {
+      background-color: var(--status-out);
+      color: #FFFDF9;
+    }
+
+    .btn-danger:hover {
+      background-color: #8C2E21;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 16px;
+    }
+
+    .form-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--ink-dark);
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 10px 13px;
+      background-color: var(--bg-ivory);
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius-sm);
+      color: var(--ink-dark);
+      font-size: 14px;
+      transition: border-color 0.15s ease;
+    }
+
+    .form-control::placeholder {
+      color: #9C8A7A;
+    }
+
+    .form-control:focus {
+      outline: none;
+      border-color: var(--terracotta);
+    }
+
+    textarea.form-control {
+      min-height: 82px;
+      resize: vertical;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    /* ========================================================================
+       3. PAGE 1: LOGIN / WELCOME PAGE (Split Layout)
+       ======================================================================== */
+    .login-wrapper {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 28px 20px;
+      background-color: var(--bg-cream);
+    }
+
+    .login-card {
+      width: 100%;
+      max-width: 1060px;
+      min-height: 620px;
+      background-color: var(--bg-ivory);
+      border: 1px solid var(--border-warm);
+      border-radius: 18px;
+      box-shadow: 0 12px 36px rgba(43, 29, 20, 0.08);
+      display: grid;
+      grid-template-columns: 1.08fr 0.92fr;
+      overflow: hidden;
+    }
+
+    .login-visual {
+      position: relative;
+      background: linear-gradient(145deg, #4A3222, #2B1D14);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+    }
+
+    .login-visual img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .login-visual-scrim {
+      position: relative;
+      z-index: 2;
+      padding: 36px 34px;
+      background: linear-gradient(to top, rgba(31, 19, 12, 0.88) 0%, rgba(31, 19, 12, 0.48) 58%, transparent 100%);
+      color: #FAF6F0;
+    }
+
+    .login-visual-kicker {
+      font-size: 12px;
+      letter-spacing: 0.04em;
+      color: #E7C3A8;
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+
+    .login-visual-title {
+      font-family: var(--font-display);
+      font-size: 26px;
+      line-height: 1.25;
+      font-weight: 600;
+      margin-bottom: 10px;
+      text-wrap: balance;
+    }
+
+    .login-visual-caption {
+      font-size: 13.5px;
+      color: #E8DDD0;
+      max-width: 44ch;
+    }
+
+    .login-panel {
+      padding: 48px 44px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background-color: var(--bg-ivory);
+    }
+
+    .brand-lockup {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      margin-bottom: 6px;
+    }
+
+    .brand-badge {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      background-color: var(--nav-brown);
+      color: #E5A47F;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .brand-name {
+      font-family: var(--font-display);
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--ink-dark);
+    }
+
+    .brand-tagline {
+      font-size: 14.5px;
+      color: var(--terracotta);
+      font-weight: 600;
+      margin-bottom: 24px;
+    }
+
+    .login-heading {
+      font-size: 19px;
+      font-weight: 700;
+      color: var(--ink-dark);
+      margin-bottom: 6px;
+    }
+
+    .login-subtext {
+      font-size: 13.5px;
+      color: var(--ink-muted);
+      margin-bottom: 24px;
+    }
+
+    .error-banner {
+      padding: 10px 13px;
+      border-radius: var(--radius-sm);
+      background-color: #F9EBE8;
+      border: 1px solid #E3B8B0;
+      color: var(--status-out);
+      font-size: 13px;
+      font-weight: 500;
+      margin-bottom: 16px;
+    }
+
+    .demo-credentials {
+      margin-top: 24px;
+      padding-top: 18px;
+      border-top: 1px solid var(--border-warm);
+    }
+
+    .demo-credentials-title {
+      font-size: 12px;
+      color: var(--ink-muted);
+      margin-bottom: 10px;
+    }
+
+    .demo-btn-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    /* ========================================================================
+       4. DARK BROWN TOP NAVIGATION BAR (3-Zone Contract)
+       ======================================================================== */
+    .top-nav {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      background-color: var(--nav-brown);
+      color: #F8F2EA;
+      border-bottom: 1px solid #422E21;
+    }
+
+    .top-nav-inner {
+      max-width: 1220px;
+      margin: 0 auto;
+      padding: 0 24px;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 32px;
+    }
+
+    .nav-brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: #FAF6F0;
+      text-decoration: none;
+      font-family: var(--font-display);
+      font-size: 21px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .nav-brand svg {
+      width: 21px;
+      height: 21px;
+      color: #E09F7D;
+      flex-shrink: 0;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    .nav-links::-webkit-scrollbar {
+      display: none;
+    }
+
+    .nav-link {
+      background: none;
+      border: none;
+      color: #D7C7B7;
+      font-size: 14px;
+      font-weight: 500;
+      padding: 20px 2px;
+      border-bottom: 2px solid transparent;
+      white-space: nowrap;
+      flex-shrink: 0;
+      transition: color 0.15s ease, border-color 0.15s ease;
+    }
+
+    .nav-link:hover {
+      color: #FFFDF9;
+    }
+
+    .nav-link.active {
+      color: #FFFDF9;
+      font-weight: 600;
+      border-bottom-color: #D9825B;
+    }
+
+    .nav-logout-btn {
+      background-color: var(--terracotta);
+      color: #FFFDF9;
+      border: none;
+      padding: 8px 16px;
+      border-radius: var(--radius-sm);
+      font-size: 13px;
+      font-weight: 600;
+      white-space: nowrap;
+      flex-shrink: 0;
+      transition: background-color 0.15s ease;
+    }
+
+    .nav-logout-btn:hover {
+      background-color: var(--terracotta-hover);
+    }
+
+    /* ========================================================================
+       5. MAIN WORKSPACE CONTAINER & PAGE HEADERS
+       ======================================================================== */
+    .workspace-main {
+      max-width: 1220px;
+      margin: 0 auto;
+      padding: 32px 24px 56px;
+    }
+
+    .page-header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .page-title {
+      font-family: var(--font-display);
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--ink-dark);
+      line-height: 1.2;
+      text-wrap: balance;
+    }
+
+    .page-subtitle {
+      font-size: 14px;
+      color: var(--ink-muted);
+      margin-top: 4px;
+    }
+
+    /* ========================================================================
+       6. DASHBOARD SECTIONS (Welcome Banner, 4 Summary Cards, Quick Actions)
+       ======================================================================== */
+    .welcome-banner {
+      background-color: var(--card-beige);
+      border: 1px solid var(--border-warm);
+      border-radius: var(--radius-lg);
+      padding: 26px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      margin-bottom: 24px;
+    }
+
+    .welcome-meta {
+      font-size: 12.5px;
+      color: var(--ink-muted);
+      margin-bottom: 6px;
+    }
+
+    .welcome-title {
+      font-family: var(--font-display);
+      font-size: 26px;
+      font-weight: 700;
+      color: var(--ink-dark);
+      text-wrap: balance;
+    }
+
+    .welcome-desc {
+      font-size: 14px;
+      color: var(--ink-body);
+      margin-top: 6px;
+      max-width: 62ch;
+    }
+
+    .quick-actions-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .welcome-photo {
+      width: 210px;
+      height: 124px;
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      flex-shrink: 0;
+      background-color: #DFD2C0;
+    }
+
+    .welcome-photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+      margin-bottom: 28px;
+    }
+
+    .summary-card {
+      background-color: var(--card-beige);
+      border: 1px solid var(--border-warm);
+      border-radius: var(--radius-md);
+      padding: 20px 22px;
+      transition: transform 0.15s ease;
+    }
+
+    .summary-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--ink-muted);
+      margin-bottom: 8px;
+    }
+
+    .summary-value {
+      font-family: var(--font-mono);
+      font-size: 30px;
+      font-weight: 600;
+      color: var(--ink-dark);
+      font-variant-numeric: tabular-nums;
+      line-height: 1.15;
+    }
+
+    .summary-value.warn {
+      color: var(--status-low);
+    }
+
+    .summary-foot {
+      font-size: 12.5px;
+      color: var(--ink-muted);
+      margin-top: 6px;
+    }
+
+    .dashboard-columns {
+      display: grid;
+      grid-template-columns: 1.35fr 0.85fr;
+      gap: 22px;
+    }
+
+    .surface-panel {
+      background-color: var(--bg-ivory);
+      border: 1px solid var(--border-warm);
+      border-radius: var(--radius-lg);
+      padding: 22px 24px;
+    }
+
+    .panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding-bottom: 14px;
+      margin-bottom: 14px;
+      border-bottom: 1px solid var(--border-warm);
+    }
+
+    .panel-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--ink-dark);
+    }
+
+    .activity-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .activity-item {
+      padding: 12px 0;
+      border-bottom: 1px solid #EFE6DA;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .activity-item:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+
+    .activity-desc {
+      font-size: 13.8px;
+      color: var(--ink-dark);
+    }
+
+    .activity-meta {
+      font-size: 12px;
+      color: var(--ink-muted);
+    }
+
+    .lowstock-item {
+      padding: 12px 0;
+      border-bottom: 1px solid #EFE6DA;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .lowstock-item:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+
+    /* ========================================================================
+       7. FILTER TOOLBARS & DATA TABLES (Inventory & Transactions)
+       ======================================================================== */
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+      background-color: var(--card-beige);
+      padding: 14px 16px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-warm);
+    }
+
+    .toolbar-search {
+      flex: 1 1 260px;
+    }
+
+    .toolbar-select {
+      flex: 0 1 200px;
+    }
+
+    .table-container {
+      background-color: var(--bg-ivory);
+      border: 1px solid var(--border-warm);
+      border-radius: var(--radius-lg);
+      overflow-x: auto;
+      box-shadow: var(--shadow-soft);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 820px;
+    }
+
+    thead th {
+      background-color: var(--card-beige);
+      color: var(--ink-body);
+      font-size: 12.5px;
+      font-weight: 700;
+      text-align: left;
+      padding: 13px 16px;
+      border-bottom: 1px solid var(--border-warm);
+      white-space: nowrap;
+    }
+
+    thead th.align-right,
+    tbody td.align-right {
+      text-align: right;
+    }
+
+    tbody tr {
+      border-bottom: 1px solid #EFE7DC;
+      transition: background-color 0.12s ease;
+    }
+
+    tbody tr:last-child {
+      border-bottom: none;
+    }
+
+    tbody tr:hover {
+      background-color: #FAF4EB;
+    }
+
+    tbody tr.row-low-stock {
+      background-color: #FDF6EC;
+    }
+
+    tbody td {
+      padding: 13px 16px;
+      font-size: 13.8px;
+      color: var(--ink-dark);
+      vertical-align: middle;
+    }
+
+    .cell-primary {
+      font-weight: 600;
+      color: var(--ink-dark);
+    }
+
+    .cell-secondary {
+      font-size: 12px;
+      color: var(--ink-muted);
+      margin-top: 2px;
+    }
+
+    .status-text {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .status-ok {
+      color: var(--status-ok);
+    }
+
+    .status-low {
+      color: var(--status-low);
+    }
+
+    .status-out {
+      color: var(--status-out);
+    }
+
+    .action-group {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* ========================================================================
+       8. CARDS GRID (Farmers Management & Resource Exchange)
+       ======================================================================== */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .beige-card {
+      background-color: var(--card-beige);
+      border: 1px solid var(--border-warm);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .card-photo {
+      width: 100%;
+      aspect-ratio: 4 / 3;
+      background: linear-gradient(135deg, #DFD0BC, #C9B398);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .card-photo.farmer-aspect {
+      aspect-ratio: 16 / 11;
+    }
+
+    .card-photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .photo-fallback-initials {
+      font-family: var(--font-display);
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--nav-brown);
+    }
+
+    .card-body {
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+
+    .card-meta-line {
+      font-size: 12.5px;
+      color: var(--ink-muted);
+      margin-bottom: 6px;
+    }
+
+    .card-title {
+      font-family: var(--font-display);
+      font-size: 19px;
+      font-weight: 700;
+      color: var(--ink-dark);
+      line-height: 1.28;
+      margin-bottom: 8px;
+    }
+
+    .card-detail {
+      font-size: 13.5px;
+      color: var(--ink-body);
+      margin-bottom: 12px;
+      flex: 1;
+    }
+
+    .exchange-box {
+      background-color: var(--bg-ivory);
+      border: 1px solid var(--border-warm);
+      border-radius: var(--radius-sm);
+      padding: 10px 12px;
+      font-size: 12.8px;
+      color: var(--ink-body);
+      margin-bottom: 16px;
+    }
+
+    .exchange-box strong {
+      color: var(--ink-dark);
+      display: block;
+      margin-bottom: 2px;
+      font-size: 12px;
+    }
+
+    .card-actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding-top: 14px;
+      border-top: 1px solid var(--border-warm);
+    }
+
+    .empty-state {
+      background-color: var(--bg-ivory);
+      border: 1px solid var(--border-warm);
+      border-radius: var(--radius-lg);
+      padding: 44px 24px;
+      text-align: center;
+    }
+
+    .empty-state h3 {
+      font-family: var(--font-display);
+      font-size: 19px;
+      color: var(--ink-dark);
+      margin-bottom: 6px;
+    }
+
+    .empty-state p {
+      font-size: 13.5px;
+      color: var(--ink-muted);
+      margin-bottom: 16px;
+    }
+
+    /* ========================================================================
+       9. MODALS, FOOTER & TOAST NOTIFICATIONS
+       ======================================================================== */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 60;
+      background-color: rgba(32, 20, 13, 0.55);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .modal-box {
+      width: 100%;
+      max-width: 560px;
+      max-height: 90vh;
+      overflow-y: auto;
+      background-color: var(--bg-ivory);
+      border: 1px solid var(--border-warm);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-modal);
+      padding: 26px 28px;
+    }
+
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding-bottom: 14px;
+      margin-bottom: 18px;
+      border-bottom: 1px solid var(--border-warm);
+    }
+
+    .modal-title {
+      font-family: var(--font-display);
+      font-size: 21px;
+      font-weight: 700;
+      color: var(--ink-dark);
+    }
+
+    .modal-close {
+      background: none;
+      border: none;
+      font-size: 22px;
+      line-height: 1;
+      color: var(--ink-muted);
+      padding: 4px 8px;
+      border-radius: 6px;
+    }
+
+    .modal-close:hover {
+      background-color: var(--card-beige);
+      color: var(--ink-dark);
+    }
+
+    .modal-footer {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 20px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border-warm);
+    }
+
+    .detail-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-bottom: 14px;
+    }
+
+    .detail-item-label {
+      font-size: 12px;
+      color: var(--ink-muted);
+      margin-bottom: 2px;
+    }
+
+    .detail-item-value {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--ink-dark);
+    }
+
+    .app-footer {
+      border-top: 1px solid var(--border-warm);
+      background-color: var(--card-beige);
+      padding: 20px 24px;
+      margin-top: 40px;
+    }
+
+    .app-footer-inner {
+      max-width: 1220px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      font-size: 12.5px;
+      color: var(--ink-muted);
+    }
+
+    .toast-container {
+      position: fixed;
+      bottom: 22px;
+      right: 22px;
+      z-index: 80;
+      background-color: var(--nav-brown);
+      color: #FAF6F0;
+      padding: 12px 18px;
+      border-radius: var(--radius-sm);
+      box-shadow: var(--shadow-modal);
+      font-size: 13.5px;
+      font-weight: 500;
+      max-width: 380px;
+    }
+
+    /* ========================================================================
+       10. RESPONSIVE MEDIA QUERIES
+       ======================================================================== */
+    @media (max-width: 980px) {
+      .login-card {
+        grid-template-columns: 1fr;
+      }
+      .login-visual {
+        min-height: 250px;
+      }
+      .summary-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .dashboard-columns {
+        grid-template-columns: 1fr;
+      }
+      .cards-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .welcome-photo {
+        display: none;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .login-panel {
+        padding: 32px 24px;
+      }
+      .top-nav-inner {
+        padding: 0 16px;
+        gap: 14px;
+      }
+      .summary-grid,
+      .cards-grid,
+      .form-row,
+      .detail-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ========================================================================
+       VIEW 1: LOGIN / WELCOME PAGE (Required before accessing Dashboard)
+       ======================================================================== -->
+  <section id="loginView" class="login-wrapper">
+    <div class="login-card">
+      <!-- Left Agriculture Landscape Photograph -->
+      <div class="login-visual">
+        <img
+          src="/images/daloy_login_landscape_1793189250814.jpg"
+          alt="Golden hour farmstead and amber harvest grain fields"
+          referrerpolicy="no-referrer"
+          onerror="handleDaloyImgError(this, 'landscape')"
+        />
+        <div class="login-visual-scrim">
+          <div class="login-visual-kicker">Agricultural Cooperative Network</div>
+          <h2 class="login-visual-title">Shared Harvests, Stronger Farming Communities</h2>
+          <p class="login-visual-caption">
+            Coordinate seed reserves, track communal equipment, support local growers, and keep vital farm resources moving where they are needed most.
+          </p>
+        </div>
+      </div>
+
+      <!-- Right Login Form -->
+      <div class="login-panel">
+        <div class="brand-lockup">
+          <div class="brand-badge" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+              <g transform="translate(12 11.4)" fill="currentColor">
+                <path d="M 0 -1.1 C -2.1 -2.7, -4.4 -5.0, -4.1 -7.2 C -3.8 -9.1, -1.5 -9.6, 0 -7.8 C 1.5 -9.6, 3.8 -9.1, 4.1 -7.2 C 4.4 -5.0, 2.1 -2.7, 0 -1.1 Z" transform="rotate(-45)" />
+                <path d="M 0 -1.1 C -2.1 -2.7, -4.4 -5.0, -4.1 -7.2 C -3.8 -9.1, -1.5 -9.6, 0 -7.8 C 1.5 -9.6, 3.8 -9.1, 4.1 -7.2 C 4.4 -5.0, 2.1 -2.7, 0 -1.1 Z" transform="rotate(45)" />
+                <path d="M 0 -1.1 C -2.1 -2.7, -4.4 -5.0, -4.1 -7.2 C -3.8 -9.1, -1.5 -9.6, 0 -7.8 C 1.5 -9.6, 3.8 -9.1, 4.1 -7.2 C 4.4 -5.0, 2.1 -2.7, 0 -1.1 Z" transform="rotate(135)" />
+                <path d="M 0 -1.1 C -2.1 -2.7, -4.4 -5.0, -4.1 -7.2 C -3.8 -9.1, -1.5 -9.6, 0 -7.8 C 1.5 -9.6, 3.8 -9.1, 4.1 -7.2 C 4.4 -5.0, 2.1 -2.7, 0 -1.1 Z" transform="rotate(-135)" />
+              </g>
+              <path d="M 12 12.5 C 12.1 16.3, 13.0 19.3, 14.9 21.8" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" />
+            </svg>
+          </div>
+          <span class="brand-name">DALOY</span>
+        </div>
+        <p class="brand-tagline">Farm Resources in Motion.</p>
+
+        <h1 class="login-heading">Coordinator Sign In</h1>
+        <p class="login-subtext">Enter your cooperative credentials to access inventory, farmer profiles, and resource exchanges.</p>
+
+        <div id="loginError" class="error-banner hidden" role="alert"></div>
+
+        <form id="loginForm" novalidate>
+          <div class="form-group">
+            <label class="form-label" for="loginIdentifier">Username or Email</label>
+            <input
+              id="loginIdentifier"
+              type="text"
+              class="form-control"
+              placeholder="e.g. admin or admin@daloyfarm.ph"
+              required
+              autocomplete="username"
+            />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="loginPassword">Password</label>
+            <input
+              id="loginPassword"
+              type="password"
+              class="form-control"
+              placeholder="Enter your password"
+              required
+              autocomplete="current-password"
+            />
+          </div>
+
+          <button type="submit" id="loginSubmitBtn" class="btn btn-primary" style="width: 100%; padding: 11px 18px; margin-top: 4px;">
+            Log In to DALOY
+          </button>
+        </form>
+
+        <div class="demo-credentials">
+          <div class="demo-credentials-title">Quick Demo Accounts (Click to autofill):</div>
+          <div class="demo-btn-row">
+            <button type="button" class="btn btn-ghost" onclick="fillDemoLogin('admin', 'daloy123')">
+              Admin: admin / daloy123
+            </button>
+            <button type="button" class="btn btn-ghost" onclick="fillDemoLogin('elena@daloyfarm.ph', 'farmer123')">
+              Coordinator: elena / farmer123
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       AUTHENTICATED APPLICATION SHELL
+       ======================================================================== -->
+  <div id="appShell" class="hidden">
+    <!-- Dark Brown Top Navigation Bar (Strict 3-Zone Contract) -->
+    <header class="top-nav">
+      <div class="top-nav-inner">
+        <!-- Zone 1: Brand Title -->
+        <a href="#dashboard" class="nav-brand" onclick="navigateTo('dashboard'); return false;">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <g transform="translate(12 11.4)" fill="currentColor">
+              <path d="M 0 -1.1 C -2.1 -2.7, -4.4 -5.0, -4.1 -7.2 C -3.8 -9.1, -1.5 -9.6, 0 -7.8 C 1.5 -9.6, 3.8 -9.1, 4.1 -7.2 C 4.4 -5.0, 2.1 -2.7, 0 -1.1 Z" transform="rotate(-45)" />
+              <path d="M 0 -1.1 C -2.1 -2.7, -4.4 -5.0, -4.1 -7.2 C -3.8 -9.1, -1.5 -9.6, 0 -7.8 C 1.5 -9.6, 3.8 -9.1, 4.1 -7.2 C 4.4 -5.0, 2.1 -2.7, 0 -1.1 Z" transform="rotate(45)" />
+              <path d="M 0 -1.1 C -2.1 -2.7, -4.4 -5.0, -4.1 -7.2 C -3.8 -9.1, -1.5 -9.6, 0 -7.8 C 1.5 -9.6, 3.8 -9.1, 4.1 -7.2 C 4.4 -5.0, 2.1 -2.7, 0 -1.1 Z" transform="rotate(135)" />
+              <path d="M 0 -1.1 C -2.1 -2.7, -4.4 -5.0, -4.1 -7.2 C -3.8 -9.1, -1.5 -9.6, 0 -7.8 C 1.5 -9.6, 3.8 -9.1, 4.1 -7.2 C 4.4 -5.0, 2.1 -2.7, 0 -1.1 Z" transform="rotate(-135)" />
+            </g>
+            <path d="M 12 12.5 C 12.1 16.3, 13.0 19.3, 14.9 21.8" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" />
+          </svg>
+          <span>DALOY</span>
+        </a>
+
+        <!-- Zone 2: 5 Concise Navigation Links -->
+        <nav class="nav-links" aria-label="Primary Navigation">
+          <button type="button" class="nav-link active" data-page="dashboard" onclick="navigateTo('dashboard')">Dashboard</button>
+          <button type="button" class="nav-link" data-page="inventory" onclick="navigateTo('inventory')">Inventory</button>
+          <button type="button" class="nav-link" data-page="farmers" onclick="navigateTo('farmers')">Farmers</button>
+          <button type="button" class="nav-link" data-page="exchange" onclick="navigateTo('exchange')">Exchange</button>
+          <button type="button" class="nav-link" data-page="transactions" onclick="navigateTo('transactions')">Transactions</button>
+        </nav>
+
+        <!-- Zone 3: 1 Primary Action -->
+        <button type="button" class="nav-logout-btn" onclick="handleLogout()">Log Out</button>
+      </div>
+    </header>
+
+    <main class="workspace-main">
+
+      <!-- ====================================================================
+           PAGE 2: DASHBOARD
+           ==================================================================== -->
+      <section id="page-dashboard" class="page-section">
+        <div class="welcome-banner">
+          <div>
+            <div class="welcome-meta" id="dashboardUserMeta">Cooperative Hub · DALOY — Farm Resources in Motion</div>
+            <h1 class="welcome-title" id="dashboardWelcomeTitle">Welcome back, Coordinator</h1>
+            <p class="welcome-desc">
+              Monitor communal farm supplies, address low-stock alerts early, and coordinate equipment and seed exchanges across member farms.
+            </p>
+            <div class="quick-actions-row">
+              <button type="button" class="btn btn-primary" onclick="openSupplyModal()">+ Add Supplies</button>
+              <button type="button" class="btn btn-secondary" onclick="openFarmerModal()">+ Add Farmer</button>
+              <button type="button" class="btn btn-secondary" onclick="openListingModal()">+ Create Listing</button>
+              <button type="button" class="btn btn-secondary" onclick="navigateTo('exchange')">View Exchanges</button>
+            </div>
+          </div>
+          <div class="welcome-photo">
+            <img
+              src="/images/resource_seeds_burlap_1793189254613.jpg"
+              alt="Burlap sacks of heirloom grain seeds"
+              referrerpolicy="no-referrer"
+              onerror="handleDaloyImgError(this, 'resource')"
+            />
+          </div>
+        </div>
+
+        <!-- 4 Summary Cards -->
+        <div class="summary-grid">
+          <div class="summary-card">
+            <div class="summary-label">Total Supplies</div>
+            <div class="summary-value" id="statTotalSupplies">0</div>
+            <div class="summary-foot">Registered farm inventory items</div>
+          </div>
+          <div class="summary-card">
+            <div class="summary-label">Low Stock</div>
+            <div class="summary-value warn" id="statLowStock">0</div>
+            <div class="summary-foot">Items at or below reorder threshold</div>
+          </div>
+          <div class="summary-card">
+            <div class="summary-label">Exchange Listings</div>
+            <div class="summary-value" id="statListings">0</div>
+            <div class="summary-foot">Available farmer resources</div>
+          </div>
+          <div class="summary-card">
+            <div class="summary-label">Completed Exchanges</div>
+            <div class="summary-value" id="statCompleted">0</div>
+            <div class="summary-foot">Fulfilled cooperative transactions</div>
+          </div>
+        </div>
+
+        <!-- Lower Dashboard Split: Recent Activities & Low-Stock Watchlist -->
+        <div class="dashboard-columns">
+          <div class="surface-panel">
+            <div class="panel-header">
+              <h2 class="panel-title">Recent Activities</h2>
+              <button type="button" class="btn btn-ghost" onclick="navigateTo('transactions')">All Records</button>
+            </div>
+            <ul id="recentActivitiesList" class="activity-list"></ul>
+          </div>
+
+          <div class="surface-panel">
+            <div class="panel-header">
+              <h2 class="panel-title">Low-Stock Attention</h2>
+              <button type="button" class="btn btn-ghost" onclick="filterInventoryLowStock()">View in Inventory</button>
+            </div>
+            <div id="lowStockWatchlist"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           PAGE 3: INVENTORY MANAGEMENT
+           ==================================================================== -->
+      <section id="page-inventory" class="page-section hidden">
+        <div class="page-header">
+          <div>
+            <h1 class="page-title">Inventory Management</h1>
+            <p class="page-subtitle">Track communal seeds, fertilizers, irrigation parts, and tools with automatic low-stock detection.</p>
+          </div>
+          <button type="button" class="btn btn-primary" onclick="openSupplyModal()">+ Add Supply</button>
+        </div>
+
+        <div class="toolbar">
+          <input
+            id="supplySearchInput"
+            type="search"
+            class="form-control toolbar-search"
+            placeholder="Search by supply name, category, condition, or notes..."
+            oninput="renderSuppliesTable()"
+          />
+          <select id="supplyCategoryFilter" class="form-control toolbar-select" onchange="renderSuppliesTable()">
+            <option value="ALL">All Categories</option>
+            <option value="Seeds & Grains">Seeds &amp; Grains</option>
+            <option value="Soil & Fertilizers">Soil &amp; Fertilizers</option>
+            <option value="Tools & Equipment">Tools &amp; Equipment</option>
+            <option value="Irrigation">Irrigation</option>
+            <option value="Livestock Feed">Livestock Feed</option>
+            <option value="Packaging & Storage">Packaging &amp; Storage</option>
+          </select>
+          <select id="supplyStatusFilter" class="form-control toolbar-select" onchange="renderSuppliesTable()">
+            <option value="ALL">All Stock Statuses</option>
+            <option value="In Stock">In Stock</option>
+            <option value="Low Stock">Low Stock</option>
+            <option value="Out of Stock">Out of Stock</option>
+          </select>
+        </div>
+
+        <div id="suppliesTableWrap" class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Item Name</th>
+                <th>Category</th>
+                <th class="align-right">Quantity</th>
+                <th>Unit</th>
+                <th>Condition</th>
+                <th class="align-right">Unit Price</th>
+                <th>Stock Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="suppliesTableBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           PAGE 4: FARMERS MANAGEMENT
+           ==================================================================== -->
+      <section id="page-farmers" class="page-section hidden">
+        <div class="page-header">
+          <div>
+            <h1 class="page-title">Farmers Directory</h1>
+            <p class="page-subtitle">Manage registered cooperative farmers, crop specializations, farm hectarage, and regional locations.</p>
+          </div>
+          <button type="button" class="btn btn-primary" onclick="openFarmerModal()">+ Add Farmer</button>
+        </div>
+
+        <div class="toolbar">
+          <input
+            id="farmerSearchInput"
+            type="search"
+            class="form-control toolbar-search"
+            placeholder="Search farmers by name, town/province, or crops..."
+            oninput="renderFarmersGrid()"
+          />
+          <select id="farmerCategoryFilter" class="form-control toolbar-select" onchange="renderFarmersGrid()">
+            <option value="ALL">All Specializations</option>
+            <option value="Grain & Rice Grower">Grain &amp; Rice Grower</option>
+            <option value="Corn & Upland Crops">Corn &amp; Upland Crops</option>
+            <option value="Root Crops & Vegetables">Root Crops &amp; Vegetables</option>
+            <option value="Equipment & Tillage">Equipment &amp; Tillage</option>
+            <option value="Orchard & Agroforestry">Orchard &amp; Agroforestry</option>
+          </select>
+          <select id="farmerLocationFilter" class="form-control toolbar-select" onchange="renderFarmersGrid()">
+            <option value="ALL">All Locations</option>
+          </select>
+        </div>
+
+        <div id="farmersGrid" class="cards-grid"></div>
+      </section>
+
+      <!-- ====================================================================
+           PAGE 5: RESOURCE EXCHANGE
+           ==================================================================== -->
+      <section id="page-exchange" class="page-section hidden">
+        <div class="page-header">
+          <div>
+            <h1 class="page-title">Resource Exchange</h1>
+            <p class="page-subtitle">Browse surplus seed lots, shared farm machinery, and storage space posted by fellow farmers.</p>
+          </div>
+          <button type="button" class="btn btn-primary" onclick="openListingModal()">+ Post Listing</button>
+        </div>
+
+        <div class="toolbar">
+          <input
+            id="listingSearchInput"
+            type="search"
+            class="form-control toolbar-search"
+            placeholder="Search available items, farmer names, locations, or exchange terms..."
+            oninput="renderListingsGrid()"
+          />
+          <select id="listingCategoryFilter" class="form-control toolbar-select" onchange="renderListingsGrid()">
+            <option value="ALL">All Categories</option>
+            <option value="Seeds & Grains">Seeds &amp; Grains</option>
+            <option value="Soil & Fertilizers">Soil &amp; Fertilizers</option>
+            <option value="Tools & Equipment">Tools &amp; Equipment</option>
+            <option value="Irrigation">Irrigation</option>
+            <option value="Packaging & Storage">Packaging &amp; Storage</option>
+          </select>
+          <select id="listingStatusFilter" class="form-control toolbar-select" onchange="renderListingsGrid()">
+            <option value="ALL">All Statuses</option>
+            <option value="Available">Available</option>
+            <option value="Reserved">Reserved</option>
+            <option value="Exchanged">Exchanged</option>
+          </select>
+        </div>
+
+        <div id="listingsGrid" class="cards-grid"></div>
+      </section>
+
+      <!-- ====================================================================
+           PAGE 6: TRANSACTIONS
+           ==================================================================== -->
+      <section id="page-transactions" class="page-section hidden">
+        <div class="page-header">
+          <div>
+            <h1 class="page-title">Exchange Transactions</h1>
+            <p class="page-subtitle">Review, approve, and complete resource exchange agreements between cooperative farmers.</p>
+          </div>
+          <button type="button" class="btn btn-primary" onclick="openTransactionModal()">+ Record Transaction</button>
+        </div>
+
+        <div class="toolbar">
+          <input
+            id="txSearchInput"
+            type="search"
+            class="form-control toolbar-search"
+            placeholder="Search by reference code, item, provider, requester, or exchange terms..."
+            oninput="renderTransactionsTable()"
+          />
+          <select id="txStatusFilter" class="form-control toolbar-select" onchange="renderTransactionsTable()">
+            <option value="ALL">All Statuses</option>
+            <option value="Pending">Pending</option>
+            <option value="Approved">Approved</option>
+            <option value="Completed">Completed</option>
+            <option value="Cancelled">Cancelled</option>
+          </select>
+        </div>
+
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Ref Code</th>
+                <th>Resource &amp; Exchange Details</th>
+                <th>Farmers (Provider &rarr; Requester)</th>
+                <th>Date</th>
+                <th class="align-right">Quantity</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="transactionsTableBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+    </main>
+
+    <footer class="app-footer">
+      <div class="app-footer-inner">
+        <span>DALOY — Farm Resources in Motion · Agricultural Resource &amp; Cooperative Exchange System</span>
+        <span id="footerUserDisplay">Signed in</span>
+      </div>
+    </footer>
+  </div>
+
+  <!-- ========================================================================
+       REUSABLE MODAL CONTAINER & TOAST NOTIFICATION
+       ======================================================================== -->
+  <div id="modalBackdrop" class="modal-backdrop hidden" onclick="handleBackdropClick(event)">
+    <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <div class="modal-header">
+        <h2 id="modalTitle" class="modal-title">Modal Title</h2>
+        <button type="button" class="modal-close" aria-label="Close modal" onclick="closeModal()">&times;</button>
+      </div>
+      <div id="modalBody"></div>
+    </div>
+  </div>
+
+  <div id="toastBanner" class="toast-container hidden" role="status" aria-live="polite"></div>
+
+  <!-- ========================================================================
+       CLIENT-SIDE CONTROLLER (Connects HTML Forms & Views to Flask + MySQL API)
+       ======================================================================== -->
+  <script>
+    const state = {
+      user: null,
+      token: sessionStorage.getItem('daloy_session_token') || '',
+      currentPage: 'dashboard',
+      dashboard: { summary: { total_supplies: 0, low_stock: 0, exchange_listings: 0, completed_exchanges: 0 }, activities: [], low_stock_items: [] },
+      supplies: [],
+      farmers: [],
+      listings: [],
+      transactions: []
+    };
+
+    const PRESET_FARMER_PHOTOS = [
+      { label: 'Woman Farmer in Straw Hat', url: '/images/farmer_elena_portrait_1793189251653.jpg' },
+      { label: 'Grain Grower in Wheat Field', url: '/images/farmer_mateo_portrait_1793189253588.jpg' },
+      { label: 'Equipment Coordinator Portrait', url: '/images/agri_avatar_manager_1792591350999.jpg' }
+    ];
+
+    const PRESET_RESOURCE_PHOTOS = [
+      { label: 'Heirloom Seeds & Grain Sacks', url: '/images/resource_seeds_burlap_1793189254613.jpg' },
+      { label: 'Rotary Power Tiller & Plow', url: '/images/resource_tiller_equipment_1793189255258.jpg' },
+      { label: 'Harvest Crop Storage Barn', url: '/images/agri_crop_storage_1792591350481.jpg' },
+      { label: 'Grain Drying & Silo Facility', url: '/images/agri_hero_silo_1792591351016.jpg' }
+    ];
+
+    function escapeHtml(val) {
+      return String(val ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    function formatCurrency(val) {
+      const n = Number(val || 0);
+      return '₱' + n.toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+
+    function formatQty(val) {
+      const n = Number(val || 0);
+      return Number.isInteger(n) ? String(n) : n.toFixed(2);
+    }
+
+    function getInitials(name) {
+      return String(name || 'DF')
+        .split(' ')
+        .filter(Boolean)
+        .slice(0, 2)
+        .map(part => part[0].toUpperCase())
+        .join('');
+    }
+
+    let toastTimer = null;
+    function showToast(message) {
+      const el = document.getElementById('toastBanner');
+      el.textContent = message;
+      el.classList.remove('hidden');
+      if (toastTimer) clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => el.classList.add('hidden'), 3400);
+    }
+
+    const IS_STATIC_LIVE_SERVER =
+      window.location.protocol === 'file:' ||
+      ['5500', '5501', '5502', '5503'].includes(window.location.port);
+    const API_BASE = IS_STATIC_LIVE_SERVER ? 'http://127.0.0.1:5000' : '';
+
+    async function apiRequest(path, options = {}) {
+      const headers = Object.assign({ 'Content-Type': 'application/json' }, options.headers || {});
+      if (state.token) {
+        headers['X-Daloy-Session'] = state.token;
+      }
+      let res;
+      try {
+        res = await fetch(API_BASE + path, Object.assign({}, options, {
+          credentials: API_BASE ? 'include' : 'same-origin',
+          headers
+        }));
+      } catch (_) {
+        if (IS_STATIC_LIVE_SERVER) {
+          throw new Error(
+            'Python Flask server is not running yet. VS Code Live Server (port ' +
+            (window.location.port || 'file') +
+            ') only opens HTML and cannot run Python or MySQL. Open VS Code Terminal, run "python app.py", then open http://127.0.0.1:5000'
+          );
+        }
+        throw new Error('Cannot reach backend server. Make sure "python app.py" is running on http://127.0.0.1:5000.');
+      }
+
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        if (res.status === 401 && path !== '/api/login') {
+          showLoginScreen();
+        }
+        if (!data.error && (res.status === 404 || res.status === 405)) {
+          throw new Error(
+            'This address (' + window.location.host + ') is a static HTML server and cannot run Python or MySQL. Run "python app.py" in VS Code Terminal and open http://127.0.0.1:5000'
+          );
+        }
+        throw new Error(data.error || 'Unable to complete request.');
+      }
+      return data;
+    }
+
+    /* ------------------------------------------------------------------------
+       AUTHENTICATION & NAVIGATION
+       ------------------------------------------------------------------------ */
+    function fillDemoLogin(identifier, password) {
+      document.getElementById('loginIdentifier').value = identifier;
+      document.getElementById('loginPassword').value = password;
+      document.getElementById('loginError').classList.add('hidden');
+    }
+
+    document.getElementById('loginForm').addEventListener('submit', async function (e) {
+      e.preventDefault();
+      const identifier = document.getElementById('loginIdentifier').value.trim();
+      const password = document.getElementById('loginPassword').value.trim();
+      const errorBox = document.getElementById('loginError');
+      const submitBtn = document.getElementById('loginSubmitBtn');
+
+      if (!identifier || !password) {
+        errorBox.textContent = 'Please enter both your username/email and password.';
+        errorBox.classList.remove('hidden');
+        return;
+      }
+
+      errorBox.classList.add('hidden');
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Signing in...';
+
+      try {
+        const result = await apiRequest('/api/login', {
+          method: 'POST',
+          body: JSON.stringify({ identifier, password })
+        });
+        state.user = result.user;
+        if (result.token) {
+          state.token = result.token;
+          sessionStorage.setItem('daloy_session_token', result.token);
+        }
+        document.getElementById('loginPassword').value = '';
+        await enterApplication();
+        showToast('Welcome back, ' + state.user.full_name + '.');
+      } catch (err) {
+        errorBox.textContent = err.message;
+        errorBox.classList.remove('hidden');
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Log In to DALOY';
+      }
+    });
+
+    async function handleLogout() {
+      try {
+        await apiRequest('/api/logout', { method: 'POST' });
+      } catch (_) {}
+      state.user = null;
+      state.token = '';
+      sessionStorage.removeItem('daloy_session_token');
+      showLoginScreen();
+      showToast('You have logged out of DALOY.');
+    }
+
+    function showLoginScreen() {
+      document.getElementById('appShell').classList.add('hidden');
+      document.getElementById('loginView').classList.remove('hidden');
+      closeModal();
+    }
+
+    async function enterApplication() {
+      document.getElementById('loginView').classList.add('hidden');
+      document.getElementById('appShell').classList.remove('hidden');
+      const todayFormatted = new Date().toLocaleDateString('en-US', {
+        weekday: 'long',
+        month: 'long',
+        day: 'numeric',
+        year: 'numeric'
+      });
+      document.getElementById('dashboardWelcomeTitle').textContent = 'Welcome back, ' + state.user.full_name;
+      document.getElementById('dashboardUserMeta').textContent = state.user.role + ' · ' + todayFormatted;
+      document.getElementById('footerUserDisplay').textContent = state.user.full_name + ' · ' + state.user.role;
+      await refreshAllData();
+      navigateTo(state.currentPage || 'dashboard');
+    }
+
+    function navigateTo(page) {
+      state.currentPage = page;
+      document.querySelectorAll('.page-section').forEach(sec => sec.classList.add('hidden'));
+      const activeSection = document.getElementById('page-' + page);
+      if (activeSection) activeSection.classList.remove('hidden');
+
+      document.querySelectorAll('.nav-link').forEach(btn => {
+        btn.classList.toggle('active', btn.getAttribute('data-page') === page);
+      });
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function filterInventoryLowStock() {
+      document.getElementById('supplyStatusFilter').value = 'Low Stock';
+      renderSuppliesTable();
+      navigateTo('inventory');
+    }
+
+    async function refreshAllData() {
+      const [dashboard, supplies, farmers, listings, transactions] = await Promise.all([
+        apiRequest('/api/dashboard'),
+        apiRequest('/api/supplies'),
+        apiRequest('/api/farmers'),
+        apiRequest('/api/listings'),
+        apiRequest('/api/transactions')
+      ]);
+      state.dashboard = dashboard;
+      state.supplies = supplies;
+      state.farmers = farmers;
+      state.listings = listings;
+      state.transactions = transactions;
+
+      renderDashboard();
+      renderSuppliesTable();
+      populateFarmerLocationFilter();
+      renderFarmersGrid();
+      renderListingsGrid();
+      renderTransactionsTable();
+    }
+
+    /* ------------------------------------------------------------------------
+       RENDER: DASHBOARD
+       ------------------------------------------------------------------------ */
+    function renderDashboard() {
+      const s = state.dashboard.summary || {};
+      document.getElementById('statTotalSupplies').textContent = s.total_supplies ?? 0;
+      document.getElementById('statLowStock').textContent = s.low_stock ?? 0;
+      document.getElementById('statListings').textContent = s.exchange_listings ?? 0;
+      document.getElementById('statCompleted').textContent = s.completed_exchanges ?? 0;
+
+      const actList = document.getElementById('recentActivitiesList');
+      const activities = state.dashboard.activities || [];
+      if (activities.length === 0) {
+        actList.innerHTML = '<li class="activity-item"><span class="activity-meta">No recent activities logged yet.</span></li>';
+      } else {
+        actList.innerHTML = activities.map(act => `
+          <li class="activity-item">
+            <div class="activity-desc">${escapeHtml(act.description)}</div>
+            <div class="activity-meta">${escapeHtml(act.activity_type)} · By ${escapeHtml(act.actor)} · <span class="num">${escapeHtml(String(act.created_at || 'Just now').slice(0, 16).replace('T', ' '))}</span></div>
+          </li>
+        `).join('');
+      }
+
+      const watchEl = document.getElementById('lowStockWatchlist');
+      const lowItems = state.dashboard.low_stock_items || [];
+      if (lowItems.length === 0) {
+        watchEl.innerHTML = '<p style="font-size:13.5px; color:var(--ink-muted); padding:8px 0;">All communal supplies are comfortably above their reorder thresholds.</p>';
+      } else {
+        watchEl.innerHTML = lowItems.map(item => `
+          <div class="lowstock-item">
+            <div>
+              <div class="cell-primary">${escapeHtml(item.item_name)}</div>
+              <div class="cell-secondary">
+                <span class="num">${formatQty(item.quantity)} ${escapeHtml(item.unit)}</span> left · Reorder at <span class="num">${formatQty(item.reorder_level)}</span>
+              </div>
+            </div>
+            <button type="button" class="btn btn-ghost" onclick="openSupplyModal(${item.id})">Restock</button>
+          </div>
+        `).join('');
+      }
+    }
+
+    /* ------------------------------------------------------------------------
+       RENDER: INVENTORY MANAGEMENT TABLE
+       ------------------------------------------------------------------------ */
+    function renderStockStatusBadge(status) {
+      if (status === 'Out of Stock') {
+        return '<span class="status-text status-out">&#10005; Out of Stock</span>';
+      }
+      if (status === 'Low Stock') {
+        return '<span class="status-text status-low">&#9650; Low Stock</span>';
+      }
+      return '<span class="status-text status-ok">&#9679; In Stock</span>';
+    }
+
+    function renderSuppliesTable() {
+      const q = (document.getElementById('supplySearchInput').value || '').toLowerCase().trim();
+      const cat = document.getElementById('supplyCategoryFilter').value;
+      const st = document.getElementById('supplyStatusFilter').value;
+
+      const filtered = state.supplies.filter(item => {
+        const matchesQuery = !q ||
+          item.item_name.toLowerCase().includes(q) ||
+          item.category.toLowerCase().includes(q) ||
+          item.item_condition.toLowerCase().includes(q) ||
+          (item.notes || '').toLowerCase().includes(q);
+        const matchesCat = cat === 'ALL' || item.category === cat;
+        const matchesStatus = st === 'ALL' || item.stock_status === st;
+        return matchesQuery && matchesCat && matchesStatus;
+      });
+
+      const tbody = document.getElementById('suppliesTableBody');
+      if (filtered.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="8" style="text-align:center; padding:34px 16px; color:var(--ink-muted);">
+              No farm supplies match your current search or filter criteria.
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      tbody.innerHTML = filtered.map(item => {
+        const isLow = item.stock_status === 'Low Stock' || item.stock_status === 'Out of Stock';
+        return `
+          <tr class="${isLow ? 'row-low-stock' : ''}">
+            <td>
+              <div class="cell-primary">${escapeHtml(item.item_name)}</div>
+              <div class="cell-secondary">Reorder level: <span class="num">${formatQty(item.reorder_level)} ${escapeHtml(item.unit)}</span></div>
+            </td>
+            <td>${escapeHtml(item.category)}</td>
+            <td class="align-right num">${formatQty(item.quantity)}</td>
+            <td>${escapeHtml(item.unit)}</td>
+            <td>${escapeHtml(item.item_condition)}</td>
+            <td class="align-right num">${formatCurrency(item.unit_price)}</td>
+            <td>${renderStockStatusBadge(item.stock_status)}</td>
+            <td>
+              <div class="action-group">
+                <button type="button" class="btn btn-ghost" onclick="viewSupplyDetails(${item.id})">View</button>
+                <button type="button" class="btn btn-ghost" onclick="openSupplyModal(${item.id})">Edit</button>
+                <button type="button" class="btn btn-danger-text" onclick="confirmDelete('supply', ${item.id}, '${escapeHtml(item.item_name)}')">Delete</button>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    /* ------------------------------------------------------------------------
+       RENDER: FARMERS MANAGEMENT CARDS
+       ------------------------------------------------------------------------ */
+    function populateFarmerLocationFilter() {
+      const select = document.getElementById('farmerLocationFilter');
+      const currentVal = select.value;
+      const locations = Array.from(new Set(state.farmers.map(f => f.location).filter(Boolean))).sort();
+      select.innerHTML = '<option value="ALL">All Locations</option>' +
+        locations.map(loc => `<option value="${escapeHtml(loc)}">${escapeHtml(loc)}</option>`).join('');
+      if (locations.includes(currentVal)) select.value = currentVal;
+    }
+
+    function renderFarmersGrid() {
+      const q = (document.getElementById('farmerSearchInput').value || '').toLowerCase().trim();
+      const cat = document.getElementById('farmerCategoryFilter').value;
+      const loc = document.getElementById('farmerLocationFilter').value;
+
+      const filtered = state.farmers.filter(f => {
+        const matchesQuery = !q ||
+          f.full_name.toLowerCase().includes(q) ||
+          f.location.toLowerCase().includes(q) ||
+          (f.primary_crops || '').toLowerCase().includes(q) ||
+          (f.phone || '').toLowerCase().includes(q);
+        const matchesCat = cat === 'ALL' || f.category === cat;
+        const matchesLoc = loc === 'ALL' || f.location === loc;
+        return matchesQuery && matchesCat && matchesLoc;
+      });
+
+      const grid = document.getElementById('farmersGrid');
+      if (filtered.length === 0) {
+        grid.innerHTML = `
+          <div class="empty-state" style="grid-column: 1 / -1;">
+            <h3>No Farmers Found</h3>
+            <p>Adjust your search filters or register a new cooperative farmer profile.</p>
+            <button type="button" class="btn btn-primary" onclick="openFarmerModal()">+ Add Farmer</button>
+          </div>
+        `;
+        return;
+      }
+
+      grid.innerHTML = filtered.map(f => `
+        <article class="beige-card">
+          <div class="card-photo farmer-aspect">
+            ${f.photo_url ? `<img src="${escapeHtml(f.photo_url)}" alt="${escapeHtml(f.full_name)}" referrerpolicy="no-referrer" onerror="handleDaloyImgError(this, 'farmer')" />` : `<span class="photo-fallback-initials">${escapeHtml(getInitials(f.full_name))}</span>`}
+          </div>
+          <div class="card-body">
+            <div class="card-meta-line">${escapeHtml(f.category)} · ${escapeHtml(f.location)}</div>
+            <h3 class="card-title">${escapeHtml(f.full_name)}</h3>
+            <p class="card-detail">
+              Crops: <strong>${escapeHtml(f.primary_crops || 'General Crops')}</strong><br />
+              Farm Area: <span class="num">${formatQty(f.farm_size_ha)} ha</span> · Tel: <span class="num">${escapeHtml(f.phone)}</span>
+            </p>
+            <div class="card-actions">
+              <button type="button" class="btn btn-secondary" style="padding:7px 13px; font-size:12.5px;" onclick="viewFarmerProfile(${f.id})">View Profile</button>
+              <div class="action-group">
+                <button type="button" class="btn btn-ghost" onclick="openFarmerModal(${f.id})">Edit</button>
+                <button type="button" class="btn btn-danger-text" onclick="confirmDelete('farmer', ${f.id}, '${escapeHtml(f.full_name)}')">Delete</button>
+              </div>
+            </div>
+          </div>
+        </article>
+      `).join('');
+    }
+
+    /* ------------------------------------------------------------------------
+       RENDER: RESOURCE EXCHANGE CARDS
+       ------------------------------------------------------------------------ */
+    function renderListingsGrid() {
+      const q = (document.getElementById('listingSearchInput').value || '').toLowerCase().trim();
+      const cat = document.getElementById('listingCategoryFilter').value;
+      const st = document.getElementById('listingStatusFilter').value;
+
+      const filtered = state.listings.filter(l => {
+        const matchesQuery = !q ||
+          l.item_name.toLowerCase().includes(q) ||
+          (l.farmer_name || '').toLowerCase().includes(q) ||
+          l.location.toLowerCase().includes(q) ||
+          l.desired_exchange.toLowerCase().includes(q);
+        const matchesCat = cat === 'ALL' || l.category === cat;
+        const matchesStatus = st === 'ALL' || l.status === st;
+        return matchesQuery && matchesCat && matchesStatus;
+      });
+
+      const grid = document.getElementById('listingsGrid');
+      if (filtered.length === 0) {
+        grid.innerHTML = `
+          <div class="empty-state" style="grid-column: 1 / -1;">
+            <h3>No Exchange Listings Match</h3>
+            <p>Post a new seed, fertilizer, or shared equipment listing to begin an exchange.</p>
+            <button type="button" class="btn btn-primary" onclick="openListingModal()">+ Post Listing</button>
+          </div>
+        `;
+        return;
+      }
+
+      grid.innerHTML = filtered.map(l => `
+        <article class="beige-card">
+          <div class="card-photo">
+            ${l.photo_url ? `<img src="${escapeHtml(l.photo_url)}" alt="${escapeHtml(l.item_name)}" referrerpolicy="no-referrer" onerror="handleDaloyImgError(this, 'resource')" />` : `<span class="photo-fallback-initials">${escapeHtml(getInitials(l.item_name))}</span>`}
+          </div>
+          <div class="card-body">
+            <div class="card-meta-line">
+              ${escapeHtml(l.category)} · ${escapeHtml(l.location)} · <strong>${escapeHtml(l.status)}</strong>
+            </div>
+            <h3 class="card-title">${escapeHtml(l.item_name)}</h3>
+            <p class="card-detail">
+              Available Qty: <strong class="num">${formatQty(l.quantity)} ${escapeHtml(l.unit)}</strong><br />
+              Farmer: <strong>${escapeHtml(l.farmer_name)}</strong>
+            </p>
+            <div class="exchange-box">
+              <strong>Preferred in Exchange:</strong>
+              ${escapeHtml(l.desired_exchange)}
+            </div>
+            <div class="card-actions">
+              <button
+                type="button"
+                class="btn btn-primary"
+                style="padding:7px 14px; font-size:12.5px;"
+                onclick="openRequestExchangeModal(${l.id})"
+                ${l.status === 'Exchanged' ? 'disabled style="opacity:0.55; padding:7px 14px; font-size:12.5px;"' : ''}
+              >
+                ${l.status === 'Exchanged' ? 'Exchanged' : 'Request Exchange'}
+              </button>
+              <div class="action-group">
+                <button type="button" class="btn btn-ghost" onclick="openListingModal(${l.id})">Edit</button>
+                <button type="button" class="btn btn-danger-text" onclick="confirmDelete('listing', ${l.id}, '${escapeHtml(l.item_name)}')">Delete</button>
+              </div>
+            </div>
+          </div>
+        </article>
+      `).join('');
+    }
+
+    /* ------------------------------------------------------------------------
+       RENDER: TRANSACTIONS TABLE
+       ------------------------------------------------------------------------ */
+    function renderTxStatus(status) {
+      if (status === 'Completed') return '<span class="status-text status-ok">&#10003; Completed</span>';
+      if (status === 'Approved') return '<span class="status-text status-ok">&#9679; Approved</span>';
+      if (status === 'Cancelled') return '<span class="status-text status-out">&#10005; Cancelled</span>';
+      return '<span class="status-text status-low">&#9684; Pending</span>';
+    }
+
+    function renderTransactionsTable() {
+      const q = (document.getElementById('txSearchInput').value || '').toLowerCase().trim();
+      const st = document.getElementById('txStatusFilter').value;
+
+      const filtered = state.transactions.filter(tx => {
+        const matchesQuery = !q ||
+          tx.transaction_code.toLowerCase().includes(q) ||
+          tx.item_name.toLowerCase().includes(q) ||
+          tx.provider_farmer.toLowerCase().includes(q) ||
+          tx.requester_farmer.toLowerCase().includes(q) ||
+          tx.exchange_details.toLowerCase().includes(q);
+        const matchesStatus = st === 'ALL' || tx.status === st;
+        return matchesQuery && matchesStatus;
+      });
+
+      const tbody = document.getElementById('transactionsTableBody');
+      if (filtered.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="7" style="text-align:center; padding:34px 16px; color:var(--ink-muted);">
+              No transaction records match your search or status filter.
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      tbody.innerHTML = filtered.map(tx => `
+        <tr>
+          <td class="num" style="font-weight:600;">${escapeHtml(tx.transaction_code)}</td>
+          <td>
+            <div class="cell-primary">${escapeHtml(tx.item_name)}</div>
+            <div class="cell-secondary">${escapeHtml(tx.exchange_details)}</div>
+          </td>
+          <td>
+            <div>${escapeHtml(tx.provider_farmer)} &rarr; <strong>${escapeHtml(tx.requester_farmer)}</strong></div>
+          </td>
+          <td class="num">${escapeHtml(String(tx.transaction_date).slice(0, 10))}</td>
+          <td class="align-right num">${formatQty(tx.quantity)} ${escapeHtml(tx.unit)}</td>
+          <td>${renderTxStatus(tx.status)}</td>
+          <td>
+            <div class="action-group">
+              <button type="button" class="btn btn-ghost" onclick="viewTransactionDetails(${tx.id})">View</button>
+              <button type="button" class="btn btn-ghost" onclick="openTransactionModal(${tx.id})">Manage</button>
+              <button type="button" class="btn btn-danger-text" onclick="confirmDelete('transaction', ${tx.id}, '${escapeHtml(tx.transaction_code)}')">Delete</button>
+            </div>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    /* ------------------------------------------------------------------------
+       MODAL ENGINE & CRUD DIALOGS
+       ------------------------------------------------------------------------ */
+    function openModal(title, htmlContent) {
+      document.getElementById('modalTitle').textContent = title;
+      document.getElementById('modalBody').innerHTML = htmlContent;
+      document.getElementById('modalBackdrop').classList.remove('hidden');
+    }
+
+    function closeModal() {
+      document.getElementById('modalBackdrop').classList.add('hidden');
+      document.getElementById('modalBody').innerHTML = '';
+    }
+
+    function handleBackdropClick(e) {
+      if (e.target.id === 'modalBackdrop') closeModal();
+    }
+
+    /* --- 1. SUPPLY MODALS (View, Add, Edit) --- */
+    function viewSupplyDetails(id) {
+      const item = state.supplies.find(s => s.id === id);
+      if (!item) return;
+      openModal('Supply Record Details', `
+        <div class="detail-grid">
+          <div><div class="detail-item-label">Item Name</div><div class="detail-item-value">${escapeHtml(item.item_name)}</div></div>
+          <div><div class="detail-item-label">Category</div><div class="detail-item-value">${escapeHtml(item.category)}</div></div>
+          <div><div class="detail-item-label">Current Quantity</div><div class="detail-item-value num">${formatQty(item.quantity)} ${escapeHtml(item.unit)}</div></div>
+          <div><div class="detail-item-label">Reorder Threshold</div><div class="detail-item-value num">${formatQty(item.reorder_level)} ${escapeHtml(item.unit)}</div></div>
+          <div><div class="detail-item-label">Condition</div><div class="detail-item-value">${escapeHtml(item.item_condition)}</div></div>
+          <div><div class="detail-item-label">Unit Price</div><div class="detail-item-value num">${formatCurrency(item.unit_price)}</div></div>
+          <div><div class="detail-item-label">Stock Status</div><div class="detail-item-value">${renderStockStatusBadge(item.stock_status)}</div></div>
+        </div>
+        <div class="form-group">
+          <div class="detail-item-label">Storage &amp; Batch Notes</div>
+          <p style="font-size:13.8px; color:var(--ink-body);">${escapeHtml(item.notes || 'No additional notes recorded.')}</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeModal()">Close</button>
+          <button type="button" class="btn btn-primary" onclick="openSupplyModal(${item.id})">Edit Supply</button>
+        </div>
+      `);
+    }
+
+    function openSupplyModal(editId) {
+      const existing = editId ? state.supplies.find(s => s.id === editId) : null;
+      const categories = ['Seeds & Grains', 'Soil & Fertilizers', 'Tools & Equipment', 'Irrigation', 'Livestock Feed', 'Packaging & Storage'];
+      const conditions = ['New', 'Good', 'Fair', 'Refurbished'];
+
+      openModal(existing ? 'Edit Farm Supply' : 'Add Farm Supply', `
+        <div id="modalFormError" class="error-banner hidden"></div>
+        <form id="supplyForm">
+          <div class="form-group">
+            <label class="form-label">Item Name *</label>
+            <input type="text" id="supName" class="form-control" required value="${escapeHtml(existing?.item_name || '')}" placeholder="e.g. Organic Vermicompost Fertilizer" />
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Category *</label>
+              <select id="supCategory" class="form-control">
+                ${categories.map(c => `<option value="${escapeHtml(c)}" ${existing?.category === c ? 'selected' : ''}>${escapeHtml(c)}</option>`).join('')}
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Condition *</label>
+              <select id="supCondition" class="form-control">
+                ${conditions.map(c => `<option value="${escapeHtml(c)}" ${existing?.item_condition === c ? 'selected' : ''}>${escapeHtml(c)}</option>`).join('')}
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Quantity *</label>
+              <input type="number" step="0.01" min="0" id="supQty" class="form-control num" required value="${existing ? existing.quantity : '25'}" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Unit *</label>
+              <input type="text" id="supUnit" class="form-control" required value="${escapeHtml(existing?.unit || 'sacks')}" placeholder="sacks, bags, kg, units..." />
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Low-Stock Reorder Level *</label>
+              <input type="number" step="0.01" min="0" id="supReorder" class="form-control num" required value="${existing ? existing.reorder_level : '10'}" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Unit Price (₱) *</label>
+              <input type="number" step="0.01" min="0" id="supPrice" class="form-control num" required value="${existing ? existing.unit_price : '500'}" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Storage Notes</label>
+            <textarea id="supNotes" class="form-control" placeholder="Warehouse bay, seed lot vigor, or supplier details...">${escapeHtml(existing?.notes || '')}</textarea>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+            <button type="submit" class="btn btn-primary">${existing ? 'Save Changes' : 'Add to Inventory'}</button>
+          </div>
+        </form>
+      `);
+
+      document.getElementById('supplyForm').addEventListener('submit', async function (e) {
+        e.preventDefault();
+        const payload = {
+          item_name: document.getElementById('supName').value.trim(),
+          category: document.getElementById('supCategory').value,
+          item_condition: document.getElementById('supCondition').value,
+          quantity: Number(document.getElementById('supQty').value),
+          unit: document.getElementById('supUnit').value.trim(),
+          reorder_level: Number(document.getElementById('supReorder').value),
+          unit_price: Number(document.getElementById('supPrice').value),
+          notes: document.getElementById('supNotes').value.trim()
+        };
+        try {
+          if (existing) {
+            await apiRequest('/api/supplies/' + existing.id, { method: 'PUT', body: JSON.stringify(payload) });
+            showToast('Updated supply: ' + payload.item_name);
+          } else {
+            await apiRequest('/api/supplies', { method: 'POST', body: JSON.stringify(payload) });
+            showToast('Added supply: ' + payload.item_name);
+          }
+          closeModal();
+          await refreshAllData();
+        } catch (err) {
+          const errEl = document.getElementById('modalFormError');
+          errEl.textContent = err.message;
+          errEl.classList.remove('hidden');
+        }
+      });
+    }
+
+    /* --- 2. FARMER MODALS (View Profile, Add, Edit) --- */
+    function viewFarmerProfile(id) {
+      const f = state.farmers.find(item => item.id === id);
+      if (!f) return;
+      const farmerListings = state.listings.filter(l => l.farmer_id === f.id);
+      openModal('Farmer Profile', `
+        <div style="display:flex; gap:16px; align-items:center; margin-bottom:18px;">
+          <div style="width:78px; height:78px; border-radius:12px; overflow:hidden; background:#DFD0BC; flex-shrink:0; display:flex; align-items:center; justify-content:center;">
+            ${f.photo_url ? `<img src="${escapeHtml(f.photo_url)}" alt="${escapeHtml(f.full_name)}" style="width:100%; height:100%; object-fit:cover;" referrerpolicy="no-referrer" onerror="handleDaloyImgError(this, 'farmer')" />` : `<span class="photo-fallback-initials" style="font-size:24px;">${escapeHtml(getInitials(f.full_name))}</span>`}
+          </div>
+          <div>
+            <h3 style="font-family:var(--font-display); font-size:20px;">${escapeHtml(f.full_name)}</h3>
+            <div style="font-size:13px; color:var(--ink-muted);">${escapeHtml(f.category)} · ${escapeHtml(f.location)}</div>
+          </div>
+        </div>
+        <div class="detail-grid">
+          <div><div class="detail-item-label">Phone Number</div><div class="detail-item-value num">${escapeHtml(f.phone)}</div></div>
+          <div><div class="detail-item-label">Email Address</div><div class="detail-item-value">${escapeHtml(f.email || 'Not provided')}</div></div>
+          <div><div class="detail-item-label">Cultivated Area</div><div class="detail-item-value num">${formatQty(f.farm_size_ha)} hectares</div></div>
+          <div><div class="detail-item-label">Primary Crops</div><div class="detail-item-value">${escapeHtml(f.primary_crops || 'Mixed Crops')}</div></div>
+        </div>
+        <div class="form-group">
+          <div class="detail-item-label">Farm Background</div>
+          <p style="font-size:13.8px; color:var(--ink-body);">${escapeHtml(f.bio || 'Active member of the DALOY cooperative resource sharing network.')}</p>
+        </div>
+        <div class="form-group">
+          <div class="detail-item-label">Posted Resource Listings (${farmerListings.length})</div>
+          <p style="font-size:13.2px; color:var(--ink-muted);">
+            ${farmerListings.length ? farmerListings.map(l => `${escapeHtml(l.item_name)} (${formatQty(l.quantity)} ${escapeHtml(l.unit)})`).join(' · ') : 'No exchange listings posted yet.'}
+          </p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeModal()">Close</button>
+          <button type="button" class="btn btn-primary" onclick="openFarmerModal(${f.id})">Edit Profile</button>
+        </div>
+      `);
+    }
+
+    function openFarmerModal(editId) {
+      const existing = editId ? state.farmers.find(f => f.id === editId) : null;
+      const categories = ['Grain & Rice Grower', 'Corn & Upland Crops', 'Root Crops & Vegetables', 'Equipment & Tillage', 'Orchard & Agroforestry'];
+      const currentPhoto = existing?.photo_url || PRESET_FARMER_PHOTOS[0].url;
+
+      openModal(existing ? 'Edit Farmer Profile' : 'Register New Farmer', `
+        <div id="modalFormError" class="error-banner hidden"></div>
+        <form id="farmerForm">
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Full Name *</label>
+              <input type="text" id="frmName" class="form-control" required value="${escapeHtml(existing?.full_name || '')}" placeholder="e.g. Danilo Pascual" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Category *</label>
+              <select id="frmCategory" class="form-control">
+                ${categories.map(c => `<option value="${escapeHtml(c)}" ${existing?.category === c ? 'selected' : ''}>${escapeHtml(c)}</option>`).join('')}
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Town &amp; Province *</label>
+              <input type="text" id="frmLocation" class="form-control" required value="${escapeHtml(existing?.location || '')}" placeholder="e.g. San Jose, Tarlac" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Contact Phone *</label>
+              <input type="text" id="frmPhone" class="form-control num" required value="${escapeHtml(existing?.phone || '')}" placeholder="0917-555-0192" />
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Email Address</label>
+              <input type="email" id="frmEmail" class="form-control" value="${escapeHtml(existing?.email || '')}" placeholder="farmer@daloyfarm.ph" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Farm Size (Hectares)</label>
+              <input type="number" step="0.1" min="0.1" id="frmSize" class="form-control num" value="${existing ? existing.farm_size_ha : '2.5'}" />
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Primary Crops / Focus</label>
+              <input type="text" id="frmCrops" class="form-control" value="${escapeHtml(existing?.primary_crops || '')}" placeholder="e.g. Heirloom Rice, Garlic" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Profile Photograph</label>
+              <select id="frmPhoto" class="form-control">
+                ${PRESET_FARMER_PHOTOS.map(p => `<option value="${escapeHtml(p.url)}" ${currentPhoto === p.url ? 'selected' : ''}>${escapeHtml(p.label)}</option>`).join('')}
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Farmer Bio &amp; Notes</label>
+            <textarea id="frmBio" class="form-control" placeholder="Farming experience, available tools, or cooperative role...">${escapeHtml(existing?.bio || '')}</textarea>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+            <button type="submit" class="btn btn-primary">${existing ? 'Save Profile' : 'Add Farmer'}</button>
+          </div>
+        </form>
+      `);
+
+      document.getElementById('farmerForm').addEventListener('submit', async function (e) {
+        e.preventDefault();
+        const payload = {
+          full_name: document.getElementById('frmName').value.trim(),
+          category: document.getElementById('frmCategory').value,
+          location: document.getElementById('frmLocation').value.trim(),
+          phone: document.getElementById('frmPhone').value.trim(),
+          email: document.getElementById('frmEmail').value.trim(),
+          farm_size_ha: Number(document.getElementById('frmSize').value || 1),
+          primary_crops: document.getElementById('frmCrops').value.trim(),
+          photo_url: document.getElementById('frmPhoto').value,
+          bio: document.getElementById('frmBio').value.trim()
+        };
+        try {
+          if (existing) {
+            await apiRequest('/api/farmers/' + existing.id, { method: 'PUT', body: JSON.stringify(payload) });
+            showToast('Updated farmer profile: ' + payload.full_name);
+          } else {
+            await apiRequest('/api/farmers', { method: 'POST', body: JSON.stringify(payload) });
+            showToast('Registered farmer: ' + payload.full_name);
+          }
+          closeModal();
+          await refreshAllData();
+        } catch (err) {
+          const errEl = document.getElementById('modalFormError');
+          errEl.textContent = err.message;
+          errEl.classList.remove('hidden');
+        }
+      });
+    }
+
+    /* --- 3. RESOURCE EXCHANGE MODALS (Post/Edit Listing & Request Exchange) --- */
+    function openListingModal(editId) {
+      if (state.farmers.length === 0) {
+        showToast('Please add at least one farmer profile before posting an exchange listing.');
+        navigateTo('farmers');
+        return;
+      }
+      const existing = editId ? state.listings.find(l => l.id === editId) : null;
+      const categories = ['Seeds & Grains', 'Soil & Fertilizers', 'Tools & Equipment', 'Irrigation', 'Packaging & Storage'];
+      const statuses = ['Available', 'Reserved', 'Exchanged'];
+      const currentPhoto = existing?.photo_url || PRESET_RESOURCE_PHOTOS[0].url;
+
+      openModal(existing ? 'Edit Resource Listing' : 'Post Resource Exchange Listing', `
+        <div id="modalFormError" class="error-banner hidden"></div>
+        <form id="listingForm">
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Offering Farmer *</label>
+              <select id="lstFarmer" class="form-control" onchange="syncListingLocationFromFarmer()">
+                ${state.farmers.map(f => `<option value="${f.id}" data-loc="${escapeHtml(f.location)}" ${existing?.farmer_id === f.id ? 'selected' : ''}>${escapeHtml(f.full_name)} (${escapeHtml(f.location)})</option>`).join('')}
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Category *</label>
+              <select id="lstCategory" class="form-control">
+                ${categories.map(c => `<option value="${escapeHtml(c)}" ${existing?.category === c ? 'selected' : ''}>${escapeHtml(c)}</option>`).join('')}
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Resource Item Name *</label>
+            <input type="text" id="lstName" class="form-control" required value="${escapeHtml(existing?.item_name || '')}" placeholder="e.g. Heirloom Mungbean Seeds or 2-Day Water Pump Share" />
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Quantity *</label>
+              <input type="number" step="0.01" min="0.1" id="lstQty" class="form-control num" required value="${existing ? existing.quantity : '10'}" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Unit *</label>
+              <input type="text" id="lstUnit" class="form-control" required value="${escapeHtml(existing?.unit || 'sacks')}" placeholder="sacks, days, rolls, units..." />
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Pickup Location *</label>
+              <input type="text" id="lstLocation" class="form-control" required value="${escapeHtml(existing?.location || state.farmers[0]?.location || '')}" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Listing Status</label>
+              <select id="lstStatus" class="form-control">
+                ${statuses.map(s => `<option value="${s}" ${existing?.status === s ? 'selected' : ''}>${s}</option>`).join('')}
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Desired Item / Service in Exchange *</label>
+            <input type="text" id="lstDesired" class="form-control" required value="${escapeHtml(existing?.desired_exchange || '')}" placeholder="e.g. 12 bags of Vermicompost or 1 day tractor plowing" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Resource Photograph</label>
+            <select id="lstPhoto" class="form-control">
+              ${PRESET_RESOURCE_PHOTOS.map(p => `<option value="${escapeHtml(p.url)}" ${currentPhoto === p.url ? 'selected' : ''}>${escapeHtml(p.label)}</option>`).join('')}
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Condition &amp; Exchange Notes</label>
+            <textarea id="lstDesc" class="form-control" placeholder="Moisture content, equipment condition, or available dates...">${escapeHtml(existing?.description || '')}</textarea>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+            <button type="submit" class="btn btn-primary">${existing ? 'Update Listing' : 'Publish Listing'}</button>
+          </div>
+        </form>
+      `);
+
+      document.getElementById('listingForm').addEventListener('submit', async function (e) {
+        e.preventDefault();
+        const payload = {
+          farmer_id: Number(document.getElementById('lstFarmer').value),
+          category: document.getElementById('lstCategory').value,
+          item_name: document.getElementById('lstName').value.trim(),
+          quantity: Number(document.getElementById('lstQty').value),
+          unit: document.getElementById('lstUnit').value.trim(),
+          location: document.getElementById('lstLocation').value.trim(),
+          status: document.getElementById('lstStatus').value,
+          desired_exchange: document.getElementById('lstDesired').value.trim(),
+          photo_url: document.getElementById('lstPhoto').value,
+          description: document.getElementById('lstDesc').value.trim()
+        };
+        try {
+          if (existing) {
+            await apiRequest('/api/listings/' + existing.id, { method: 'PUT', body: JSON.stringify(payload) });
+            showToast('Updated listing: ' + payload.item_name);
+          } else {
+            await apiRequest('/api/listings', { method: 'POST', body: JSON.stringify(payload) });
+            showToast('Published exchange listing: ' + payload.item_name);
+          }
+          closeModal();
+          await refreshAllData();
+        } catch (err) {
+          const errEl = document.getElementById('modalFormError');
+          errEl.textContent = err.message;
+          errEl.classList.remove('hidden');
+        }
+      });
+    }
+
+    function syncListingLocationFromFarmer() {
+      const sel = document.getElementById('lstFarmer');
+      const opt = sel.options[sel.selectedIndex];
+      const loc = opt ? opt.getAttribute('data-loc') : '';
+      if (loc) document.getElementById('lstLocation').value = loc;
+    }
+
+    function openRequestExchangeModal(listingId) {
+      const l = state.listings.find(item => item.id === listingId);
+      if (!l) return;
+      const otherFarmers = state.farmers.filter(f => f.id !== l.farmer_id);
+      const todayIso = new Date().toISOString().slice(0, 10);
+
+      openModal('Request Resource Exchange', `
+        <div id="modalFormError" class="error-banner hidden"></div>
+        <div class="exchange-box" style="margin-bottom:18px;">
+          <strong>Selected Resource from ${escapeHtml(l.farmer_name)}:</strong>
+          ${escapeHtml(l.item_name)} (<span class="num">${formatQty(l.quantity)} ${escapeHtml(l.unit)}</span> available in ${escapeHtml(l.location)})<br />
+          <span style="color:var(--ink-muted);">Preferred Trade: ${escapeHtml(l.desired_exchange)}</span>
+        </div>
+        <form id="requestExchangeForm">
+          <div class="form-group">
+            <label class="form-label">Requesting Farmer *</label>
+            <input
+              type="text"
+              id="reqFarmerName"
+              class="form-control"
+              list="farmerNamesList"
+              required
+              value="${escapeHtml(otherFarmers[0]?.full_name || '')}"
+              placeholder="Select or type requesting farmer name"
+            />
+            <datalist id="farmerNamesList">
+              ${state.farmers.map(f => `<option value="${escapeHtml(f.full_name)}"></option>`).join('')}
+            </datalist>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Requested Quantity (${escapeHtml(l.unit)}) *</label>
+              <input type="number" step="0.01" min="0.1" max="${l.quantity}" id="reqQty" class="form-control num" required value="${l.quantity}" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Proposed Exchange Date *</label>
+              <input type="date" id="reqDate" class="form-control num" required value="${todayIso}" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Resource / Service Offered in Return *</label>
+            <input type="text" id="reqDetails" class="form-control" required value="Offering ${escapeHtml(l.desired_exchange)}" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Pickup &amp; Coordination Notes</label>
+            <textarea id="reqNotes" class="form-control" placeholder="Preferred handover schedule or transport notes..."></textarea>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+            <button type="submit" class="btn btn-primary">Submit Exchange Request</button>
+          </div>
+        </form>
+      `);
+
+      document.getElementById('requestExchangeForm').addEventListener('submit', async function (e) {
+        e.preventDefault();
+        const payload = {
+          requester_farmer: document.getElementById('reqFarmerName').value.trim(),
+          quantity: Number(document.getElementById('reqQty').value),
+          transaction_date: document.getElementById('reqDate').value,
+          exchange_details: document.getElementById('reqDetails').value.trim(),
+          notes: document.getElementById('reqNotes').value.trim()
+        };
+        try {
+          const createdTx = await apiRequest('/api/listings/' + l.id + '/request', {
+            method: 'POST',
+            body: JSON.stringify(payload)
+          });
+          closeModal();
+          await refreshAllData();
+          navigateTo('transactions');
+          showToast('Exchange request created (' + createdTx.transaction_code + ').');
+        } catch (err) {
+          const errEl = document.getElementById('modalFormError');
+          errEl.textContent = err.message;
+          errEl.classList.remove('hidden');
+        }
+      });
+    }
+
+    /* --- 4. TRANSACTION MODALS (View, Record, Manage Status) --- */
+    function viewTransactionDetails(id) {
+      const tx = state.transactions.find(t => t.id === id);
+      if (!tx) return;
+      openModal('Transaction Record ' + tx.transaction_code, `
+        <div class="detail-grid">
+          <div><div class="detail-item-label">Reference Code</div><div class="detail-item-value num">${escapeHtml(tx.transaction_code)}</div></div>
+          <div><div class="detail-item-label">Current Status</div><div class="detail-item-value">${renderTxStatus(tx.status)}</div></div>
+          <div><div class="detail-item-label">Resource Item</div><div class="detail-item-value">${escapeHtml(tx.item_name)}</div></div>
+          <div><div class="detail-item-label">Quantity</div><div class="detail-item-value num">${formatQty(tx.quantity)} ${escapeHtml(tx.unit)}</div></div>
+          <div><div class="detail-item-label">Provider Farmer</div><div class="detail-item-value">${escapeHtml(tx.provider_farmer)}</div></div>
+          <div><div class="detail-item-label">Requester Farmer</div><div class="detail-item-value">${escapeHtml(tx.requester_farmer)}</div></div>
+          <div><div class="detail-item-label">Transaction Date</div><div class="detail-item-value num">${escapeHtml(String(tx.transaction_date).slice(0, 10))}</div></div>
+        </div>
+        <div class="form-group">
+          <div class="detail-item-label">Agreed Exchange Terms</div>
+          <p style="font-size:13.8px; color:var(--ink-dark); font-weight:500;">${escapeHtml(tx.exchange_details)}</p>
+        </div>
+        <div class="form-group">
+          <div class="detail-item-label">Verification Notes</div>
+          <p style="font-size:13.5px; color:var(--ink-body);">${escapeHtml(tx.notes || 'No inspection remarks added.')}</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeModal()">Close</button>
+          <button type="button" class="btn btn-primary" onclick="openTransactionModal(${tx.id})">Manage Record</button>
+        </div>
+      `);
+    }
+
+    function openTransactionModal(editId) {
+      const existing = editId ? state.transactions.find(t => t.id === editId) : null;
+      const statuses = ['Pending', 'Approved', 'Completed', 'Cancelled'];
+      const todayIso = new Date().toISOString().slice(0, 10);
+
+      openModal(existing ? 'Manage Transaction ' + existing.transaction_code : 'Record Exchange Transaction', `
+        <div id="modalFormError" class="error-banner hidden"></div>
+        <form id="txForm">
+          <div class="form-group">
+            <label class="form-label">Resource Item Name *</label>
+            <input type="text" id="txItem" class="form-control" required value="${escapeHtml(existing?.item_name || '')}" placeholder="e.g. Certified Amber Rice Seedlings" />
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Provider Farmer *</label>
+              <input type="text" id="txProvider" class="form-control" list="txFarmerOptions" required value="${escapeHtml(existing?.provider_farmer || state.farmers[0]?.full_name || '')}" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Requester Farmer *</label>
+              <input type="text" id="txRequester" class="form-control" list="txFarmerOptions" required value="${escapeHtml(existing?.requester_farmer || state.farmers[1]?.full_name || '')}" />
+            </div>
+          </div>
+          <datalist id="txFarmerOptions">
+            ${state.farmers.map(f => `<option value="${escapeHtml(f.full_name)}"></option>`).join('')}
+          </datalist>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Quantity *</label>
+              <input type="number" step="0.01" min="0.1" id="txQty" class="form-control num" required value="${existing ? existing.quantity : '5'}" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Unit *</label>
+              <input type="text" id="txUnit" class="form-control" required value="${escapeHtml(existing?.unit || 'sacks')}" />
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Transaction Date *</label>
+              <input type="date" id="txDate" class="form-control num" required value="${escapeHtml(existing ? String(existing.transaction_date).slice(0, 10) : todayIso)}" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Status *</label>
+              <select id="txStatus" class="form-control">
+                ${statuses.map(s => `<option value="${s}" ${existing?.status === s ? 'selected' : ''}>${s}</option>`).join('')}
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Exchange Terms &amp; Details *</label>
+            <input type="text" id="txDetails" class="form-control" required value="${escapeHtml(existing?.exchange_details || '')}" placeholder="e.g. Exchanged for 8 bags of Vermicompost" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Inspection / Handover Notes</label>
+            <textarea id="txNotes" class="form-control" placeholder="Gate check, condition upon handover, or witness remarks...">${escapeHtml(existing?.notes || '')}</textarea>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+            <button type="submit" class="btn btn-primary">${existing ? 'Save Transaction' : 'Record Transaction'}</button>
+          </div>
+        </form>
+      `);
+
+      document.getElementById('txForm').addEventListener('submit', async function (e) {
+        e.preventDefault();
+        const payload = {
+          item_name: document.getElementById('txItem').value.trim(),
+          provider_farmer: document.getElementById('txProvider').value.trim(),
+          requester_farmer: document.getElementById('txRequester').value.trim(),
+          quantity: Number(document.getElementById('txQty').value),
+          unit: document.getElementById('txUnit').value.trim(),
+          transaction_date: document.getElementById('txDate').value,
+          status: document.getElementById('txStatus').value,
+          exchange_details: document.getElementById('txDetails').value.trim(),
+          notes: document.getElementById('txNotes').value.trim()
+        };
+        try {
+          if (existing) {
+            await apiRequest('/api/transactions/' + existing.id, { method: 'PUT', body: JSON.stringify(payload) });
+            showToast('Updated transaction ' + existing.transaction_code + ' (' + payload.status + ').');
+          } else {
+            await apiRequest('/api/transactions', { method: 'POST', body: JSON.stringify(payload) });
+            showToast('Recorded new transaction.');
+          }
+          closeModal();
+          await refreshAllData();
+        } catch (err) {
+          const errEl = document.getElementById('modalFormError');
+          errEl.textContent = err.message;
+          errEl.classList.remove('hidden');
+        }
+      });
+    }
+
+    /* --- 5. DELETE CONFIRMATION MODAL (No window.confirm) --- */
+    function confirmDelete(entityType, id, label) {
+      const endpointMap = {
+        supply: '/api/supplies/' + id,
+        farmer: '/api/farmers/' + id,
+        listing: '/api/listings/' + id,
+        transaction: '/api/transactions/' + id
+      };
+      const titleMap = {
+        supply: 'Delete Farm Supply',
+        farmer: 'Delete Farmer Profile',
+        listing: 'Delete Exchange Listing',
+        transaction: 'Delete Transaction Record'
+      };
+      openModal(titleMap[entityType] || 'Confirm Deletion', `
+        <p style="font-size:14.2px; color:var(--ink-body); margin-bottom:8px;">
+          Are you sure you want to permanently remove <strong>${label}</strong> from the database?
+        </p>
+        <p style="font-size:12.5px; color:var(--ink-muted);">
+          This action updates your cooperative records immediately and cannot be undone.
+        </p>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+          <button type="button" id="confirmDeleteBtn" class="btn btn-danger">Delete Record</button>
+        </div>
+      `);
+
+      document.getElementById('confirmDeleteBtn').addEventListener('click', async function () {
+        try {
+          await apiRequest(endpointMap[entityType], { method: 'DELETE' });
+          closeModal();
+          await refreshAllData();
+          showToast('Deleted record: ' + label);
+        } catch (err) {
+          closeModal();
+          showToast(err.message);
+        }
+      });
+    }
+
+    /* ------------------------------------------------------------------------
+       INITIALIZATION: Verify active session or require login
+       ------------------------------------------------------------------------ */
+    (async function bootstrapSession() {
+      try {
+        const res = await apiRequest('/api/me');
+        if (res.authenticated && res.user) {
+          state.user = res.user;
+          await enterApplication();
+        } else {
+          showLoginScreen();
+        }
+      } catch (err) {
+        showLoginScreen();
+        if (IS_STATIC_LIVE_SERVER && err && err.message) {
+          const errorBox = document.getElementById('loginError');
+          errorBox.textContent = err.message;
+          errorBox.classList.remove('hidden');
+        }
+      }
+    })();
+  </script>
+</body>
+</html>

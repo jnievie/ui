@@ -1,6 +1,6 @@
 {
-  "name": "AgriStock OS — Agricultural Inventory & Stock UI System",
-  "description": "Enterprise agriculture inventory and stocks system with UI design specifications, silo & warehouse telemetry, real-time stock checking, and Python backend architecture.",
+  "name": "Daloy OS — Agricultural Inventory & Silo Telemetry System",
+  "description": "Enterprise agricultural inventory, grain silo telemetry, automated truck scale weighbridge, aeration management with Google Search weather grounding, PostgreSQL storage, and Python agronomic analytics.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }
